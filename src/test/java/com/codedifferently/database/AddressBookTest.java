@@ -1,6 +1,7 @@
 package com.codedifferently.database;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
 
 public class AddressBookTest extends TestCase {
     AddressBook addressBook;
@@ -15,24 +16,50 @@ public class AddressBookTest extends TestCase {
         per2 = new Person("Laurie", "Werth", 33, "lauriewerth@gmail.com");
     }
 
-    public void testGetOwner() {
+    public void testSetAndGetOwner() {
         addressBook.setOwner(per1);
-        System.out.println(addressBook.getOwner());
-    }
-
-    public void testSetOwner() {
+        String actual = addressBook.getOwner().getFirstName();
+        String expected = "Matt";
+        System.out.println(actual);
+        Assert.assertEquals(expected, actual);
     }
 
     public void testAddPerson() {
+        addressBook.addPerson(per2);
+        String actual = addressBook.getPersonByEmail("lauriewerth@gmail.com").getFirstName();
+        String expected = "Laurie";
+        System.out.println(actual);
+
+        Assert.assertEquals(expected, actual);
     }
 
     public void testRemovePerson() {
+        addressBook.addPerson(per2);
+        System.out.println("Removed " + addressBook.getAllPeople().get(0).getFirstName());
+        addressBook.removePerson(per2);
+
+        Integer actual = addressBook.getAllPeople().size();
+        Integer expected = 0;
+        Assert.assertEquals(expected, actual);
     }
 
     public void testGetPersonByEmail() {
+
+        addressBook.addPerson(per2);
+        String actual = addressBook.getPersonByEmail("lauriewerth@gmail.com").getFirstName();
+        String expected = "Laurie";
+        System.out.println(actual);
+
+        Assert.assertEquals(expected, actual);
     }
 
     public void testGetAllPeople() {
+        addressBook.addPerson(per2);
+        Person actual = addressBook.getAllPeople().get(0);
+        Person expected = addressBook.getPersonByEmail("lauriewerth@gmail.com");
+
+        System.out.println(actual);
+        Assert.assertEquals(expected, actual);
     }
 
     public void testSaveAll() {

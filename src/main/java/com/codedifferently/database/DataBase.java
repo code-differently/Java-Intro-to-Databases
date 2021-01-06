@@ -11,7 +11,7 @@ public class DataBase {
     private void getConnection() throws DataBaseConnectionException {
         try{
             Connection connection = DriverManager
-                    .getConnection("jdbc:mysql://localhost:3306/addressbook?createDatabaseIfNotExist=true&useSSL=false", "developer01", "pass");
+                    .getConnection("jdbc:mysql://localhost:3306/cdDb?createDatabaseIfNotExist=true&useSSL=false", "developer01", "pass");
             connection.setAutoCommit(false);
             logger.info("Successful Connection");
         }catch (Exception e) {
