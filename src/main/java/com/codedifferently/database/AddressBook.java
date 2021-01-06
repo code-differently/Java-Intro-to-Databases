@@ -6,9 +6,10 @@ import java.util.List;
 public class AddressBook {
     private Person owner;
     private List<Person> people;
+    private DataBase dataBase;
 
-    public AddressBook(Person owner) {
-        this.owner = owner;
+    public AddressBook(DataBase dataBase) {
+        this.dataBase = dataBase;
         people = new ArrayList<>();
     }
 
