@@ -16,7 +16,7 @@ public class MySQLDatabase implements Database {
 
     private void getConnection() throws DataBaseConnectionException {
         try {
-            Connection connection = DriverManager
+            connection = DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/addressbook?createDatabaseIfNotExist=true&useSSL=false", "developer01", "pass");
             connection.setAutoCommit(false);
             logger.info("Successful Connection");
