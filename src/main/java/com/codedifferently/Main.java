@@ -5,20 +5,22 @@ import com.codedifferently.addressbook.exceptions.AddressBookPersonNotFoundExcep
 import com.codedifferently.database.MySQLDatabase;
 import com.codedifferently.database.DataBaseConnectionException;
 import com.codedifferently.person.Person;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+
+import java.util.*;
+
+
+//// TODO: 1/8/21 We can add the first person, but after that it is no longer adding and it is having an error. We need to make sure that once the person
+//// We should probably clear out the old person before trying to add another person.
+
 
 public class Main {
 
-    private MySQLDatabase mySQLDatabase;
-    private AddressBook addressBook;
+    private final AddressBook addressBook;
     private static Scanner scanner;
     private ArrayList<String> menu;
 
     public Main() throws DataBaseConnectionException {
-        mySQLDatabase = new MySQLDatabase();
+        MySQLDatabase mySQLDatabase = new MySQLDatabase();
         scanner = new Scanner(System.in);
         addressBook = new AddressBook(null, mySQLDatabase);
         initMenuOption();
@@ -28,8 +30,9 @@ public class Main {
             menu = new ArrayList<>();
             menu.add("Exit");
             menu.add("Show All");
-            menu.add("Add new");
+            menu.add("Add New");
             menu.add("Find by email");
+            menu.add("Save All Contacts");
     }
 
     public Integer displayMenu(){
@@ -43,7 +46,7 @@ public class Main {
     }
 
     public void displayAllPeople() {
-        //// TODO: 1/8/21 Show All People From Address Book
+        addressBook.getAllPeople().forEach(person -> System.out.println(person.toString()));
     }
 
     private String getStringOutPut(String msg){
@@ -51,11 +54,6 @@ public class Main {
         return scanner.next();
     }
 
-    private Integer getIntegerOutput(String msg){
-        System.out.println(msg);
-        String response = scanner.next();
-        return Integer.parseInt(response);
-    }
 
     public void createNewPerson(){
         Map<String, String> rawData = new HashMap<>();

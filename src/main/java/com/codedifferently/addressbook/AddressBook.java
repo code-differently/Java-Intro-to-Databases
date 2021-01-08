@@ -21,9 +21,9 @@ public class AddressBook {
     }
 
     public void addPerson(Person person){
-        logger.info("Adding new person " + person.getFirstName());
         this.people.add(person);
         saveAll();
+        //this.people.remove(person); Adding people is not working once we have one person on our database //// TODO: 1/8/21 Should we remove person after saving?
     }
 
     public void removePerson(Person person){
@@ -47,8 +47,10 @@ public class AddressBook {
     public Boolean saveAll(){
         try {
             dataBase.saveAllPeople(people);
+            people.forEach(nm -> System.out.println(nm.toString()));
             return true;
         } catch (DatabaseCouldNotSaveException e) {
+           logger.info("Failed To Save AT SAVEALL() IN ADDRESSBOOK");
             return false;
         }
 
