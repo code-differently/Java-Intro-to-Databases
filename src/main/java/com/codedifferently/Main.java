@@ -1,10 +1,13 @@
 package com.codedifferently;
 
 import com.codedifferently.addressbook.AddressBook;
+import com.codedifferently.addressbook.exceptions.AddressBookPersonNotFoundException;
 import com.codedifferently.database.MySQLDatabase;
 import com.codedifferently.database.DataBaseConnectionException;
 import com.codedifferently.person.Person;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -17,45 +20,16 @@ public class Main {
     public Main() throws DataBaseConnectionException {
         mySQLDatabase = new MySQLDatabase();
         scanner = new Scanner(System.in);
-        addressBook = new AddressBook(mySQLDatabase);
+        addressBook = new AddressBook(null, mySQLDatabase);
         initMenuOption();
     }
 
-    //// TODO: 1/6/21 can this make an owner and a Person? 
-    public static Boolean createOwnerFromCommandLine() throws DataBaseConnectionException {
-
-        Main main = new Main(); //// TODO: 1/6/21 Not sure this is right... how do I get database in here?
-
-        System.out.println("Enter First Name Of Owner: ");
-        String firstName = scanner.next();
-        System.out.println("Enter Last Name: ");
-        String lastName = scanner.next();
-        System.out.println("Enter Age: ");
-        Integer age = scanner.nextInt();
-        System.out.println("Enter E-Mail Address: ");
-        String email = scanner.next();
-
-        //Person owner = new Person(firstName, lastName, age, email);
-        //System.out.println(owner.toString());
-
-        //main.addressBook.setOwner(owner);
-
-        return true;
-    }
-
-    public static void addPersonToDatabase(Person person) {
-    }
-
     private void initMenuOption(){
-        menu = new ArrayList<>();
-        menu.add("Exit");
-        menu.add("Set Owner");
-        menu.add("Add Contact");
-        menu.add("View All Contacts");
-        menu.add("Update Contact Info");
-        /**
-         * Add your menu items here
-         */
+            menu = new ArrayList<>();
+            menu.add("Exit");
+            menu.add("Show All");
+            menu.add("Add new");
+            menu.add("Find by email");
     }
 
     public Integer displayMenu(){
@@ -68,41 +42,75 @@ public class Main {
         return option;
     }
 
+    public void displayAllPeople() {
+        //// TODO: 1/8/21 Show All People From Address Book
+    }
+
+    private String getStringOutPut(String msg){
+        System.out.println(msg);
+        return scanner.next();
+    }
+
+    private Integer getIntegerOutput(String msg){
+        System.out.println(msg);
+        String response = scanner.next();
+        return Integer.parseInt(response);
+    }
+
+    public void createNewPerson(){
+        Map<String, String> rawData = new HashMap<>();
+        rawData.put("firstName", getStringOutPut("Please enter first name:"));
+        rawData.put("lastName", getStringOutPut("Please enter last name:"));
+        rawData.put("email", getStringOutPut("Please enter email:"));
+        rawData.put("age", getStringOutPut("Please enter age:"));
+        Person person = new Person(rawData);
+        addressBook.addPerson(person);
+    }
+
+    public void findPerson(){
+        String email = getStringOutPut("What email are you looking for?");
+        try {
+            Person person = addressBook.getPersonByEmail(email);
+            displayPerson(person);
+        } catch (AddressBookPersonNotFoundException e) {
+            System.out.println("There is no user with the email :" + email);
+        }
+    }
+
+    private void displayPerson(Person person){
+        String output = String.format("%s %s %s %s %d", person.getId(), person.getFirstName(), person.getLastName(), person.getEmail(), person.getAge());
+        System.out.println(output);
+    }
+
+
     public static void main(String[] args) {
         try {
             Main main = new Main();
-
-            //// TODO: 1/6/21  main.dataBase ?????
-
             Boolean endProgram = false;
             System.out.println("Welcome to address book");
             while (!endProgram) {
-                /* Your code goes here */
                 int menuOption = main.displayMenu();
-
                 switch(menuOption){
                     case 0:
                         System.out.println("Goodbye!!");
-                        endProgram = true;  // loop breaks when true;
+                        endProgram = true;
                         break;
                     case 1:
-
-                        if(Main.createOwnerFromCommandLine()) System.out.println("Successfully Added Owner!\n");
-                        else System.out.println("Changes Not Saved.\n");
-
+                        main.displayAllPeople();
                         break;
                     case 2:
-                        System.out.println("Enter Fist Name: ");
+                        main.createNewPerson();
                         break;
                     case 3:
-                        System.out.println("-- All Contacts --");
-                    case 4:
-                        System.out.println("Enter E-Mail Of Contact To Update: ");
+                        main.findPerson();
+                        break;
                     default:
+                        System.out.println("I don't know that command");
                         break;
                 }
             }
-        } catch (DataBaseConnectionException e) {
+        }
+        catch (DataBaseConnectionException e) {
             System.out.println("Your database could not be connected to.");
         }
     }

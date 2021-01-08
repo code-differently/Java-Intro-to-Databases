@@ -31,7 +31,6 @@ public class MySQLDatabase implements Database {
         getConnection();
     }
 
-
     public List<Person> getAllPeople() { //// TODO: 1/8/21 Return an ArrayList Of Person for AddressBook, pull from db
         List<Person> people = new ArrayList<>();
         try {
@@ -44,8 +43,8 @@ public class MySQLDatabase implements Database {
                 rawData.put("firstName", resultSet.getString("first_name"));
                 rawData.put("lastName", resultSet.getString("last_name"));
                 rawData.put("email", resultSet.getString("email"));
-                rawData.put("age",resultSet.getString("age"));
-                Person person = new Person(id,rawData);
+                rawData.put("age", resultSet.getString("age"));
+                Person person = new Person(id, rawData);
                 people.add(person);
             }
         }
