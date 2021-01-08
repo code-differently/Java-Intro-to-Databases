@@ -1,9 +1,14 @@
-package com.codedifferently.database;
+package com.codedifferently.addressbook;
+
+import com.codedifferently.database.DataBase;
+import com.codedifferently.person.Person;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class AddressBook {
+    private static final Logger logger = Logger.getGlobal();
     private Person owner;
     private List<Person> people;
     private DataBase dataBase;
@@ -23,6 +28,8 @@ public class AddressBook {
 
     public void addPerson(Person person) {
         this.people.add(person);
+        logger.info("Added " + person.getFirstName());
+        logger.info("We Have " + this.people.size() + " People.");
     }
 
     public void removePerson(Person person) {

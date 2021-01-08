@@ -1,10 +1,9 @@
 package com.codedifferently;
 
-import com.codedifferently.database.AddressBook;
+import com.codedifferently.addressbook.AddressBook;
 import com.codedifferently.database.DataBase;
 import com.codedifferently.database.DataBaseConnectionException;
-import com.codedifferently.database.Person;
-
+import com.codedifferently.person.Person;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -22,7 +21,11 @@ public class Main {
         initMenuOption();
     }
 
-    public static Boolean addOwnerThroughCommandLine() {
+    //// TODO: 1/6/21 can this make an owner and a Person? 
+    public static Boolean createOwnerFromCommandLine() throws DataBaseConnectionException {
+
+        Main main = new Main(); //// TODO: 1/6/21 Not sure this is right... how do I get database in here?
+
         System.out.println("Enter First Name Of Owner: ");
         String firstName = scanner.next();
         System.out.println("Enter Last Name: ");
@@ -34,13 +37,13 @@ public class Main {
 
         Person owner = new Person(firstName, lastName, age, email);
         System.out.println(owner.toString());
-        System.out.println("Is This Correct? Type (1) To Accept Contact Or (2) To Make Changes.");
 
-        if(scanner.nextInt() == 1) {
-            //// TODO: 1/6/21 Create Function For Database Entry - Add Call Passing In Our Person.
-            return true;
-        }
-        return false;
+        main.addressBook.setOwner(owner);
+
+        return true;
+    }
+
+    public static void addPersonToDatabase(Person person) {
     }
 
     private void initMenuOption(){
@@ -68,6 +71,9 @@ public class Main {
     public static void main(String[] args) {
         try {
             Main main = new Main();
+
+            //// TODO: 1/6/21  main.dataBase ?????
+
             Boolean endProgram = false;
             System.out.println("Welcome to address book");
             while (!endProgram) {
@@ -81,7 +87,7 @@ public class Main {
                         break;
                     case 1:
 
-                        if(Main.addOwnerThroughCommandLine()) System.out.println("Successfully Added Owner!\n");
+                        if(Main.createOwnerFromCommandLine()) System.out.println("Successfully Added Owner!\n");
                         else System.out.println("Changes Not Saved.\n");
 
                         break;

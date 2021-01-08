@@ -1,5 +1,7 @@
 package com.codedifferently.database;
 
+import com.codedifferently.addressbook.AddressBook;
+import com.codedifferently.person.Person;
 import junit.framework.TestCase;
 import org.junit.Assert;
 
