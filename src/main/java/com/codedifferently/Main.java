@@ -1,7 +1,7 @@
 package com.codedifferently;
 
 import com.codedifferently.addressbook.AddressBook;
-import com.codedifferently.database.DataBase;
+import com.codedifferently.database.MySQLDatabase;
 import com.codedifferently.database.DataBaseConnectionException;
 import com.codedifferently.person.Person;
 import java.util.ArrayList;
@@ -9,15 +9,15 @@ import java.util.Scanner;
 
 public class Main {
 
-    private DataBase dataBase;
+    private MySQLDatabase mySQLDatabase;
     private AddressBook addressBook;
     private static Scanner scanner;
     private ArrayList<String> menu;
 
     public Main() throws DataBaseConnectionException {
-        dataBase = new DataBase();
+        mySQLDatabase = new MySQLDatabase();
         scanner = new Scanner(System.in);
-        addressBook = new AddressBook(dataBase);
+        addressBook = new AddressBook(mySQLDatabase);
         initMenuOption();
     }
 
@@ -35,10 +35,10 @@ public class Main {
         System.out.println("Enter E-Mail Address: ");
         String email = scanner.next();
 
-        Person owner = new Person(firstName, lastName, age, email);
-        System.out.println(owner.toString());
+        //Person owner = new Person(firstName, lastName, age, email);
+        //System.out.println(owner.toString());
 
-        main.addressBook.setOwner(owner);
+        //main.addressBook.setOwner(owner);
 
         return true;
     }

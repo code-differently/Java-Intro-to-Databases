@@ -1,5 +1,8 @@
 package com.codedifferently.person;
 
+import com.codedifferently.Main;
+
+import java.util.Map;
 import java.util.UUID;
 
 public class Person {
@@ -9,37 +12,19 @@ public class Person {
     private String email;
     private String id;
 
-    /**
-     * Use this method to create Person Object
-     * @param firstName
-     * @param lastName
-     * @param age
-     * @param email
-     */
 
-    public Person(String firstName, String lastName, Integer age, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.email = email;
-        this.id = UUID.randomUUID().toString();
+    public Person(Map<String, String> personMap) { // This takes in an initial call to our constructor and recalls it adding an id number. Since we have an overloaded method, it now calls our second constructor.
+        this(UUID.randomUUID().toString(), personMap);
     }
 
-    /**
-     * Use this method to get Person Object from Database
-     * @param firstName
-     * @param lastName
-     * @param age
-     * @param email
-     */
-
-    public Person(String firstName, String lastName, Integer age, String email, String id) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.email = email;
+    public Person(String id, Map<String, String> personMap) {
+        this.firstName = personMap.getOrDefault("firstName", "no value");
+        this.lastName = personMap.getOrDefault("lastName", "no value");
+        this.age = Integer.parseInt(personMap.getOrDefault("age", "0"));
+        this.email = personMap.getOrDefault("email", "no value");
         this.id = id;
     }
+
 
     public String getId() {
         return id;

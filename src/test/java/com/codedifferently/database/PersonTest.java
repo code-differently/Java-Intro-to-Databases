@@ -5,12 +5,21 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PersonTest {
+    Map<String, String> personMap;
     Person person;
 
     @Before
     public void setUp() throws Exception {
-         person = new Person("Matt", "Werth", 33, "matthewwerth@gmail.com");
+         personMap = new HashMap<>();
+         personMap.put("firstName", "Matt");
+         personMap.put("lastName", "Werth");
+         personMap.put("email", "matthewwerth@gmail.com");
+         personMap.put("age", "33");
+         person = new Person(personMap);
     }
 
     @Test
@@ -19,7 +28,7 @@ public class PersonTest {
         String expected = "Matt";
         System.out.println(actual);
 
-        Assert.assertEquals(expected, actual);
+        Assert.assertEquals("Get The First Name: ", expected, actual);
     }
 
     @Test
@@ -29,7 +38,7 @@ public class PersonTest {
         String expected = "Marty";
         System.out.println(actual);
 
-        Assert.assertEquals(expected, actual);
+        Assert.assertEquals("Set The First Name: ", expected, actual);
     }
 
     @Test
@@ -38,7 +47,7 @@ public class PersonTest {
         String expected = "Werth";
         System.out.println(actual);
 
-        Assert.assertEquals(expected, actual);
+        Assert.assertEquals("Get The Last Name: ",expected, actual);
     }
 
     @Test
@@ -48,7 +57,7 @@ public class PersonTest {
         String expected = "Wyler";
         System.out.println(actual);
 
-        Assert.assertEquals(expected, actual);
+        Assert.assertEquals("Set The Last Name: ", expected, actual);
     }
 
     @Test
@@ -57,7 +66,7 @@ public class PersonTest {
         Integer expected = 33;
         System.out.println(actual);
 
-        Assert.assertEquals(expected, actual);
+        Assert.assertEquals("Get Age: ", expected, actual);
     }
 
     @Test
@@ -67,7 +76,7 @@ public class PersonTest {
         Integer expected = 31;
         System.out.println(actual);
 
-        Assert.assertEquals(expected, actual);
+        Assert.assertEquals("Set Age: ", expected, actual);
     }
 
     @Test
@@ -76,16 +85,16 @@ public class PersonTest {
         String expected = "matthewwerth@gmail.com";
         System.out.println(actual);
 
-        Assert.assertEquals(expected, actual);
+        Assert.assertEquals("Get Email: ", expected, actual);
     }
 
     @Test
     public void setEmail() {
-        person.setEmail("testThis@gmail.com");
+        person.setEmail("test@gmail.com");
         String actual = person.getEmail();
-        String expected = "testThis@gmail.com";
+        String expected = "test@gmail.com";
         System.out.println(actual);
 
-        Assert.assertEquals(expected, actual);
+        Assert.assertEquals("Set Email: ", expected, actual);
     }
 }

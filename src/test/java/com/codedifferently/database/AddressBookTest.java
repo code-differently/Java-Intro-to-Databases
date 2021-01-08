@@ -1,21 +1,28 @@
 package com.codedifferently.database;
 
 import com.codedifferently.addressbook.AddressBook;
+import com.codedifferently.addressbook.exceptions.AddressBookPersonNotFoundException;
 import com.codedifferently.person.Person;
 import junit.framework.TestCase;
 import org.junit.Assert;
+import org.junit.Before;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddressBookTest extends TestCase {
     AddressBook addressBook;
-    DataBase dataBase;
+    Map<String, String> personMap;
     Person per1;
-    Person per2;
 
+    @Before
     public void setUp() throws Exception {
-        dataBase = new DataBase();
-        addressBook = new AddressBook(dataBase);
-        per1 = new Person("Matt", "Werth", 33, "matthewwerth@gmail.com");
-        per2 = new Person("Laurie", "Werth", 33, "lauriewerth@gmail.com");
+        personMap = new HashMap<>();
+        personMap.put("firstName", "Matt");
+        personMap.put("lastName", "Werth");
+        personMap.put("email", "matthewwerth@gmail.com");
+        personMap.put("age", "33");
+        per1 = new Person(personMap);
     }
 
     public void testSetAndGetOwner() {
@@ -26,8 +33,8 @@ public class AddressBookTest extends TestCase {
         Assert.assertEquals(expected, actual);
     }
 
-    public void testAddPerson() {
-        addressBook.addPerson(per2);
+    public void testAddPerson() throws AddressBookPersonNotFoundException {
+        addressBook.addPerson(per1);
         String actual = addressBook.getPersonByEmail("lauriewerth@gmail.com").getFirstName();
         String expected = "Laurie";
         System.out.println(actual);
@@ -36,29 +43,29 @@ public class AddressBookTest extends TestCase {
     }
 
     public void testRemovePerson() {
-        addressBook.addPerson(per2);
+        addressBook.addPerson(per1);
         System.out.println("Removed " + addressBook.getAllPeople().get(0).getFirstName());
-        addressBook.removePerson(per2);
+        addressBook.removePerson(per1);
 
         Integer actual = addressBook.getAllPeople().size();
         Integer expected = 0;
         Assert.assertEquals(expected, actual);
     }
 
-    public void testGetPersonByEmail() {
+    public void testGetPersonByEmail() throws AddressBookPersonNotFoundException {
 
-        addressBook.addPerson(per2);
-        String actual = addressBook.getPersonByEmail("lauriewerth@gmail.com").getFirstName();
-        String expected = "Laurie";
+        addressBook.addPerson(per1);
+        String actual = addressBook.getPersonByEmail("matthewwerth@gmail.com").getFirstName();
+        String expected = "Matt";
         System.out.println(actual);
 
         Assert.assertEquals(expected, actual);
     }
 
-    public void testGetAllPeople() {
-        addressBook.addPerson(per2);
+    public void testGetAllPeople() throws AddressBookPersonNotFoundException {
+        addressBook.addPerson(per1);
         Person actual = addressBook.getAllPeople().get(0);
-        Person expected = addressBook.getPersonByEmail("lauriewerth@gmail.com");
+        Person expected = addressBook.getPersonByEmail("matthewwerth@gmail.com");
 
         System.out.println(actual);
         Assert.assertEquals(expected, actual);
